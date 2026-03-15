@@ -1,0 +1,174 @@
+'use client';
+
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Brain, 
+  MessageSquare, 
+  Database, 
+  PlayCircle, 
+  BarChart3, 
+  Settings, 
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  Sun,
+  Moon,
+  User,
+  ShieldCheck,
+  Zap,
+  LayoutDashboard
+} from 'lucide-react';
+
+interface AppLayoutProps {
+  user: { name: string; email: string };
+  onSignOut: () => void;
+  children: React.ReactNode;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+}
+
+export default function AppLayout({ user, onSignOut, children, activeTab, setActiveTab }: AppLayoutProps) {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
+
+  const menuItems = [
+    { id: 'dashboard', name: 'Dominion Overview', icon: LayoutDashboard },
+    { id: 'chat', name: 'Multi-Agent Chat', icon: MessageSquare },
+    { id: 'rag', name: 'Knowledge Vault', icon: Database },
+    { id: 'sim', name: 'Simulation', icon: PlayCircle },
+    { id: 'consensus', name: 'Sovereign Consensus', icon: ShieldCheck },
+    { id: 'analytics', name: 'Intelligence Logs', icon: BarChart3 },
+  ];
+
+  return (
+    <div className="flex h-screen bg-royal-black text-white overflow-hidden">
+      {/* Sidebar */}
+      <motion.aside
+        initial={false}
+        animate={{ width: isSidebarCollapsed ? 80 : 280 }}
+        className="relative bg-royal-charcoal border-r border-royal-gold/10 flex flex-col z-30"
+      >
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          className="absolute -right-3 top-20 w-6 h-6 bg-royal-gold rounded-full flex items-center justify-center text-royal-black shadow-lg border border-royal-black z-50 hover:scale-110 transition-transform"
+        >
+          {isSidebarCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+        </button>
+
+        {/* Brand */}
+        <div className="p-6 flex items-center gap-4">
+          <div className="w-10 h-10 rounded-xl bg-royal-gold flex items-center justify-center shrink-0 shadow-3xl">
+            <Brain className="text-royal-black w-6 h-6" />
+          </div>
+          {!isSidebarCollapsed && (
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-xl font-black italic uppercase tracking-tighter gradient-text"
+            >
+              OmniMind
+            </motion.span>
+          )}
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 px-4 py-8 space-y-2">
+          {menuItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all duration-300 group ${
+                activeTab === item.id 
+                  ? 'bg-royal-gold/10 border border-royal-gold/20 text-royal-gold shadow-inner' 
+                  : 'text-white/40 hover:text-white hover:bg-white/5 border border-transparent'
+              }`}
+            >
+              <item.icon size={20} className={activeTab === item.id ? 'text-royal-gold' : 'group-hover:text-royal-gold transition-colors'} />
+              {!isSidebarCollapsed && (
+                <span className="text-xs font-black uppercase tracking-widest whitespace-nowrap">
+                  {item.name}
+                </span>
+              )}
+            </button>
+          ))}
+        </nav>
+
+        {/* Footer */}
+        <div className="p-4 border-t border-white/5">
+          <button
+            onClick={onSignOut}
+            className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-red-500/60 hover:text-red-500 hover:bg-red-500/5 transition-all group"
+          >
+            <LogOut size={20} />
+            {!isSidebarCollapsed && (
+              <span className="text-xs font-black uppercase tracking-widest">Sever Link</span>
+            )}
+          </button>
+        </div>
+      </motion.aside>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col relative overflow-hidden">
+        {/* Top Header */}
+        <header className="h-20 bg-royal-black/50 backdrop-blur-xl border-b border-royal-gold/10 px-8 flex items-center justify-between z-20">
+          <div className="flex items-center gap-4">
+            <h2 className="text-sm font-black uppercase tracking-[0.3em] text-white/60">
+              {menuItems.find(i => i.id === activeTab)?.name || 'Command Center'}
+            </h2>
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-royal-gold/5 border border-royal-gold/10">
+              <Sparkles size={12} className="text-royal-gold" />
+              <span className="text-[8px] font-black text-royal-gold uppercase tracking-widest">Protocol Active</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6">
+            {/* Theme Toggle */}
+            <div className="flex items-center gap-1 p-1 bg-white/5 rounded-full border border-white/5">
+              <button
+                onClick={() => setIsDarkTheme(false)}
+                className={`p-2 rounded-full transition-all ${!isDarkTheme ? 'bg-royal-gold text-royal-black shadow-lg' : 'text-white/20 hover:text-white'}`}
+              >
+                <Sun size={16} />
+              </button>
+              <button
+                onClick={() => setIsDarkTheme(true)}
+                className={`p-2 rounded-full transition-all ${isDarkTheme ? 'bg-royal-gold text-royal-black shadow-lg' : 'text-white/20 hover:text-white'}`}
+              >
+                <Moon size={16} />
+              </button>
+            </div>
+
+            {/* Profile */}
+            <div className="flex items-center gap-4 pl-6 border-l border-white/10">
+              <div className="text-right hidden sm:block">
+                <p className="text-[10px] font-black text-white uppercase tracking-wider">{user.name}</p>
+                <p className="text-[8px] font-bold text-royal-gold/60 uppercase tracking-widest text-glow">Sovereign Tier</p>
+              </div>
+              <div className="relative group cursor-pointer">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-royal-gold to-royal-gold-dark flex items-center justify-center font-black text-royal-black shadow-3xl group-hover:scale-105 transition-transform">
+                  {user.name.charAt(0)}
+                </div>
+                {/* Dropdown Indicator */}
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-royal-black rounded-full" />
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Viewport */}
+        <main className="flex-1 overflow-y-auto relative scrollbar-hide">
+          {/* Background decoration */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-royal-gold/5 blur-[120px] rounded-full -mr-64 -mt-64 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-royal-gold/5 blur-[120px] rounded-full -ml-64 -mb-64 pointer-events-none" />
+          
+          <div className="relative z-10">
+            {children}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}

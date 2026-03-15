@@ -17,6 +17,7 @@ import Dashboard from '@/components/sections/Dashboard';
 import { Toaster } from 'react-hot-toast';
 
 import Pricing from '@/components/sections/Pricing';
+import AppLayout from '@/components/layout/AppLayout';
 
 export default function HomePage() {
   const [showWorkflow, setShowWorkflow] = useState(false);
@@ -24,6 +25,7 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   useEffect(() => {
     // Simulate initial loading
@@ -42,10 +44,25 @@ export default function HomePage() {
   const handleAuthSuccess = (userData: { name: string; email: string }) => {
     setUser(userData);
     setIsAuthModalOpen(false);
+    setActiveTab('dashboard');
   };
 
   if (isLoading) {
     return <LoadingScreen />;
+  }
+
+  // Logged In Experience
+  if (user) {
+    return (
+      <AppLayout 
+        user={user} 
+        onSignOut={() => setUser(null)} 
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      >
+        <Dashboard user={user} activeTab={activeTab} />
+      </AppLayout>
+    );
   }
 
   return (
@@ -78,17 +95,7 @@ export default function HomePage() {
       />
 
       <AnimatePresence mode="wait">
-        {user ? (
-          <motion.div
-            key="dashboard"
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.8 }}
-          >
-            <Dashboard user={user} />
-          </motion.div>
-        ) : !showWorkflow ? (
+        {!showWorkflow ? (
           <motion.div
             key="homepage"
             initial={{ opacity: 0 }}
@@ -172,4 +179,5 @@ export default function HomePage() {
       </AnimatePresence>
     </main>
   );
-}
+}
+
