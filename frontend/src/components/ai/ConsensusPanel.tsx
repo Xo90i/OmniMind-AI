@@ -48,9 +48,9 @@ const insightIcons = {
 };
 
 const insightColors = {
-  positive: 'text-green-600 bg-green-50 border-green-200',
-  warning: 'text-yellow-600 bg-yellow-50 border-yellow-200',
-  info: 'text-blue-600 bg-blue-50 border-blue-200',
+  positive: 'text-royal-gold bg-royal-gold/5 border-royal-gold/20',
+  warning: 'text-royal-silver bg-white/5 border-white/10',
+  info: 'text-white/40 bg-white/5 border-white/5',
 };
 
 export default function ConsensusPanel({ consensus }: ConsensusPanelProps) {
@@ -68,44 +68,66 @@ export default function ConsensusPanel({ consensus }: ConsensusPanelProps) {
     : defaultConsensusData;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
       {/* Consensus Recommendation */}
-      <div className="card">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-          AI Consensus
-        </h2>
+      <div className="royal-card p-10">
+        <div className="flex items-center justify-between mb-10">
+          <h2 className="text-xl font-black text-white uppercase tracking-tight italic">
+            Sovereign Consensus
+          </h2>
+          <div className="w-12 h-1 rounded-full bg-gradient-to-r from-royal-gold to-transparent" />
+        </div>
         
-        <div className="text-center mb-6">
-          <div className="text-3xl font-bold text-primary-600 mb-2">
-            {consensusData.confidence}%
-          </div>
-          <div className="text-sm text-gray-600">Confidence Level</div>
-          <div className="w-full bg-gray-200 rounded-full h-2 mt-3">
-            <motion.div
-              className="bg-primary-600 h-2 rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${consensusData.confidence}%` }}
-              transition={{ duration: 1, delay: 0.5 }}
-            />
+        <div className="text-center mb-10 relative">
+          <div className="relative inline-block">
+            <svg className="w-40 h-40 transform -rotate-90">
+              <circle
+                cx="80"
+                cy="80"
+                r="70"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="transparent"
+                className="text-white/5"
+              />
+              <motion.circle
+                cx="80"
+                cy="80"
+                r="70"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="transparent"
+                strokeDasharray={440}
+                initial={{ strokeDashoffset: 440 }}
+                animate={{ strokeDashoffset: 440 - (440 * consensusData.confidence) / 100 }}
+                transition={{ duration: 2, ease: "easeOut" }}
+                className="text-royal-gold"
+              />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-4xl font-black text-white italic tracking-tighter">{consensusData.confidence}%</span>
+              <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">Certainty</span>
+            </div>
           </div>
         </div>
 
-        <div className="text-center p-4 bg-primary-50 rounded-lg border border-primary-200">
-          <h3 className="font-semibold text-primary-900 mb-2">
-            Recommended Strategy
+        <div className="text-center p-8 bg-white/5 rounded-[2rem] border border-white/5 relative group overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-royal-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <h3 className="text-[10px] font-black text-royal-gold mb-4 uppercase tracking-[0.4em]">
+            Recommended Mandate
           </h3>
-          <p className="text-primary-800">
-            {consensusData.recommendation}
+          <p className="text-lg font-bold text-white leading-relaxed italic relative z-10">
+            "{consensusData.recommendation}"
           </p>
         </div>
       </div>
 
       {/* Key Insights */}
-      <div className="card">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Key Insights
+      <div className="royal-card p-10">
+        <h3 className="text-lg font-black text-white uppercase tracking-tight mb-8 italic">
+          Strategic Synthesis
         </h3>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {consensusData.keyInsights.map((insight, index) => {
             const Icon = insightIcons[insight.type as keyof typeof insightIcons];
             return (
@@ -114,13 +136,15 @@ export default function ConsensusPanel({ consensus }: ConsensusPanelProps) {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className={`p-3 rounded-lg border ${insightColors[insight.type as keyof typeof insightColors]}`}
+                className={`p-5 rounded-2xl border ${insightColors[insight.type as keyof typeof insightColors]} group hover:scale-[1.02] transition-transform duration-500`}
               >
-                <div className="flex items-start gap-3">
-                  <Icon className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-royal-black/50 border border-white/5 flex items-center justify-center shrink-0">
+                    <Icon className="h-5 w-5" />
+                  </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{insight.text}</p>
-                    <p className="text-xs mt-1 opacity-75">— {insight.agent}</p>
+                    <p className="text-xs font-bold text-white/80 leading-relaxed mb-2">{insight.text}</p>
+                    <p className="text-[9px] font-black uppercase tracking-widest text-royal-gold/40">Construct: {insight.agent}</p>
                   </div>
                 </div>
               </motion.div>
@@ -129,31 +153,24 @@ export default function ConsensusPanel({ consensus }: ConsensusPanelProps) {
         </div>
       </div>
 
-      {consensus?.analysis && (
-        <div className="card">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Consensus Analysis</h3>
-          <p className="text-sm text-gray-700 whitespace-pre-wrap">{consensus.analysis}</p>
-        </div>
-      )}
-
       {/* Next Steps */}
-      <div className="card">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Recommended Next Steps
+      <div className="royal-card p-10">
+        <h3 className="text-lg font-black text-white uppercase tracking-tight mb-8 italic">
+          Execution Protocols
         </h3>
-        <div className="space-y-2">
+        <div className="space-y-4">
           {consensusData.nextSteps.map((step, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50"
+              className="flex items-center gap-6 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-royal-gold/20 transition-all duration-500 group"
             >
-              <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-sm font-medium">
-                {index + 1}
+              <div className="w-10 h-10 bg-royal-black border border-royal-gold/20 text-royal-gold rounded-xl flex items-center justify-center text-xs font-black shadow-3xl group-hover:scale-110 transition-transform">
+                {String(index + 1).padStart(2, '0')}
               </div>
-              <span className="text-sm text-gray-700">{step}</span>
+              <span className="text-xs font-bold text-white/50 group-hover:text-white transition-colors">{step}</span>
             </motion.div>
           ))}
         </div>

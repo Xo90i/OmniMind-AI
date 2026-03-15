@@ -12,38 +12,38 @@ interface QueryInterfaceProps {
 
 const exampleQueries = [
   {
-    text: "How can I start an organic farming business in Tamil Nadu with ₹5 lakh budget?",
+    text: "Synthesize a sovereign market entry strategy for organic ventures in Tamil Nadu with ₹5 lakh capital.",
     category: "Business",
     icon: TrendingUp,
-    color: "from-blue-500 to-blue-600"
+    color: "from-royal-gold to-royal-gold-dark"
   },
   {
-    text: "What's the best strategy to transition from engineering to data science career?",
+    text: "Architect a professional evolution path from classical engineering to high-fidelity data science.",
     category: "Career",
     icon: Brain,
-    color: "from-purple-500 to-purple-600"
+    color: "from-white/20 to-white/5"
   },
   {
-    text: "How should I optimize my investment portfolio for retirement in 20 years?",
+    text: "Optimize a high-yield investment portfolio for a 20-year horizon with strategic risk insulation.",
     category: "Finance",
     icon: Target,
-    color: "from-green-500 to-green-600"
+    color: "from-royal-gold/40 to-royal-gold/10"
   },
   {
-    text: "What's the optimal strategy to launch a SaaS product in the healthcare market?",
+    text: "Engineer a disruptive go-to-market protocol for healthcare SaaS within a resilient framework.",
     category: "Strategy",
     icon: Lightbulb,
-    color: "from-orange-500 to-orange-600"
+    color: "from-white/10 to-white/20"
   },
 ];
 
 const suggestions = [
-  "Market analysis and competitive landscape",
-  "Financial projections and ROI calculations", 
-  "Risk assessment and mitigation strategies",
-  "Implementation timeline and milestones",
-  "Resource requirements and team structure",
-  "Regulatory compliance and legal considerations"
+  "Strategic market synthesis and adversary analysis",
+  "High-fidelity financial projections and ROI modeling", 
+  "Resilient risk assessment and insulation protocols",
+  "Implementation architecture and phase timelines",
+  "Elite resource allocation and human capital structure",
+  "Sovereign compliance and architectural governance"
 ];
 
 export default function QueryInterface({ onSubmit }: QueryInterfaceProps) {
@@ -64,23 +64,22 @@ export default function QueryInterface({ onSubmit }: QueryInterfaceProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) {
-      toast.error('Please enter your question');
+      toast.error('The mandate requires expression');
       return;
     }
     
     if (query.length < 20) {
-      toast.error('Please provide more details for better analysis');
+      toast.error('Provide deeper context for sovereign analysis');
       return;
     }
     
     setIsLoading(true);
     
-    // Add selected suggestions to query
     const fullQuery = selectedSuggestions.length > 0 
-      ? `${query}\n\nPlease also consider: ${selectedSuggestions.join(', ')}`
+      ? `${query}\n\nStrategic Mandates: ${selectedSuggestions.join(', ')}`
       : query;
     
-    toast.success('Initializing AI agents...');
+    toast.success('Summoning the Sovereign Collective...');
     
     await new Promise(resolve => setTimeout(resolve, 1500));
     onSubmit(fullQuery);
@@ -102,30 +101,30 @@ export default function QueryInterface({ onSubmit }: QueryInterfaceProps) {
 
   const handleVoiceInput = () => {
     setIsRecording(!isRecording);
-    toast.success(isRecording ? 'Voice recording stopped' : 'Voice recording started');
+    toast.success(isRecording ? 'Vocal capture ceased' : 'Vocal capture initiated');
   };
 
   return (
     <div className="w-full max-w-6xl mx-auto">
       <motion.div
-        initial={{ opacity: 0, y: 30, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
         className="relative"
       >
         {/* Main input card */}
-        <div className="glass-card p-8 relative overflow-hidden">
-          {/* Animated background */}
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-purple-500/5 to-secondary-500/5 animate-gradient-x" />
+        <div className="royal-card p-10 sm:p-14 relative overflow-hidden group">
+          {/* Background glow effect */}
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-royal-gold/10 blur-[100px] rounded-full group-hover:bg-royal-gold/20 transition-all duration-700" />
           
-          <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary-500 to-purple-500 flex items-center justify-center">
-                <SparklesIcon className="w-5 h-5 text-white" />
+          <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
+            <div className="flex items-center space-x-6 mb-10">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-royal-gold to-royal-gold-dark flex items-center justify-center shadow-3xl border border-white/20">
+                <SparklesIcon className="w-7 h-7 text-royal-black" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-white">Ask OmniMind AI</h3>
-                <p className="text-white/70 text-sm">Describe your complex problem or decision</p>
+                <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic">Issue Your Mandate</h3>
+                <p className="text-royal-gold/60 text-[10px] font-black uppercase tracking-[0.3em]">Describe your strategic challenge</p>
               </div>
             </div>
 
@@ -133,8 +132,8 @@ export default function QueryInterface({ onSubmit }: QueryInterfaceProps) {
               <textarea
                 ref={textareaRef}
                 rows={4}
-                className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-6 py-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 resize-none transition-all duration-300"
-                placeholder="e.g., I want to start a sustainable business in renewable energy. I have $100K budget and 2 years timeline. What's the best approach considering market trends, regulations, and risk factors?"
+                className="w-full bg-white/5 border border-white/5 rounded-3xl px-8 py-6 text-white placeholder-white/20 focus:outline-none focus:ring-1 focus:ring-royal-gold/50 focus:border-royal-gold/50 resize-none transition-all duration-500 text-lg font-medium leading-relaxed"
+                placeholder="e.g., Engineer a multi-layered strategic expansion for renewable infrastructure..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 disabled={isLoading}
@@ -147,21 +146,21 @@ export default function QueryInterface({ onSubmit }: QueryInterfaceProps) {
                 onClick={handleVoiceInput}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                className={`absolute top-6 right-6 w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 border border-white/5 ${
                   isRecording 
-                    ? 'bg-red-500 text-white animate-pulse' 
-                    : 'bg-white/10 text-white/70 hover:bg-white/20'
+                    ? 'bg-red-500/20 text-red-500 border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.3)] animate-pulse' 
+                    : 'bg-white/5 text-white/40 hover:text-royal-gold hover:border-royal-gold/30'
                 }`}
               >
-                <MicrophoneIcon className="w-5 h-5" />
+                <MicrophoneIcon className="w-6 h-6" />
               </motion.button>
             </div>
 
             {/* Character count and suggestions toggle */}
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-4">
-                <div className="text-sm text-white/60">
-                  {query.length}/1000 characters
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+              <div className="flex items-center space-x-6">
+                <div className="text-[10px] font-black uppercase tracking-widest text-white/30">
+                  {query.length} / 1000
                 </div>
                 {query.length > 20 && (
                   <motion.button
@@ -169,10 +168,10 @@ export default function QueryInterface({ onSubmit }: QueryInterfaceProps) {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     onClick={() => setShowSuggestions(!showSuggestions)}
-                    className="text-sm text-primary-300 hover:text-primary-200 transition-colors flex items-center gap-1"
+                    className="text-[10px] font-black uppercase tracking-widest text-royal-gold hover:text-white transition-colors flex items-center gap-2 px-4 py-2 bg-royal-gold/5 rounded-full border border-royal-gold/20"
                   >
                     <DocumentTextIcon className="w-4 h-4" />
-                    {showSuggestions ? 'Hide' : 'Add'} Analysis Areas
+                    {showSuggestions ? 'Condense' : 'Expand'} Parameters
                   </motion.button>
                 )}
               </div>
@@ -180,19 +179,19 @@ export default function QueryInterface({ onSubmit }: QueryInterfaceProps) {
               <motion.button
                 type="submit"
                 disabled={!query.trim() || isLoading}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(212, 175, 55, 0.4)" }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-primary flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+                className="btn-primary flex items-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed px-12 py-5 text-xs font-black uppercase tracking-[0.2em]"
               >
                 {isLoading ? (
                   <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                    <span>Analyzing...</span>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-royal-black"></div>
+                    <span>Processing...</span>
                   </>
                 ) : (
                   <>
                     <Users className="w-5 h-5" />
-                    <span>Deploy AI Agents</span>
+                    <span>Engage Sovereign Agents</span>
                     <PaperAirplaneIcon className="w-5 h-5" />
                   </>
                 )}
@@ -207,30 +206,32 @@ export default function QueryInterface({ onSubmit }: QueryInterfaceProps) {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="mt-6 pt-6 border-t border-white/10"
+                transition={{ duration: 0.5 }}
+                className="mt-12 pt-12 border-t border-white/5"
               >
-                <h4 className="text-white font-medium mb-4">What aspects should we analyze?</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <h4 className="text-[10px] font-black text-white/40 uppercase tracking-[0.5em] mb-8">Refine Synthetic Domains</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {suggestions.map((suggestion, index) => (
                     <motion.button
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: index * 0.05 }}
                       onClick={() => toggleSuggestion(suggestion)}
-                      className={`text-left p-3 rounded-xl border transition-all duration-300 ${
+                      className={`text-left p-5 rounded-2xl border transition-all duration-500 flex items-center justify-between group/suggest ${
                         selectedSuggestions.includes(suggestion)
-                          ? 'bg-primary-500/20 border-primary-400/50 text-primary-200'
-                          : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:border-white/20'
+                          ? 'bg-royal-gold/10 border-royal-gold/50 text-white'
+                          : 'bg-white/5 border-white/5 text-white/30 hover:border-white/20 hover:text-white/60'
                       }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">{suggestion}</span>
+                      <span className="text-xs font-bold uppercase tracking-tight">{suggestion}</span>
+                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all duration-500 ${
+                        selectedSuggestions.includes(suggestion)
+                          ? 'bg-royal-gold border-royal-gold shadow-[0_0_10px_rgba(212,175,55,0.5)]'
+                          : 'border-white/20 group-hover/suggest:border-white/40'
+                      }`}>
                         {selectedSuggestions.includes(suggestion) && (
-                          <div className="w-4 h-4 bg-primary-500 rounded-full flex items-center justify-center">
-                            <div className="w-2 h-2 bg-white rounded-full" />
-                          </div>
+                          <div className="w-2 h-2 bg-royal-black rounded-full" />
                         )}
                       </div>
                     </motion.button>
@@ -245,34 +246,38 @@ export default function QueryInterface({ onSubmit }: QueryInterfaceProps) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="mt-12"
+          transition={{ delay: 0.5, duration: 1 }}
+          className="mt-20"
         >
-          <h3 className="text-white font-semibold mb-6 text-center">Try these example scenarios:</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex items-center justify-center space-x-4 mb-10">
+            <div className="h-[1px] w-20 bg-gradient-to-r from-transparent to-royal-gold/20" />
+            <h3 className="text-white/40 font-black text-[10px] uppercase tracking-[0.5em]">Scenario Archives</h3>
+            <div className="h-[1px] w-20 bg-gradient-to-l from-transparent to-royal-gold/20" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {exampleQueries.map((example, index) => (
               <motion.button
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + index * 0.1, duration: 0.6 }}
-                whileHover={{ scale: 1.02, y: -2 }}
+                transition={{ delay: 0.6 + index * 0.1, duration: 0.8 }}
+                whileHover={{ y: -5, boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleExampleClick(example.text)}
-                className="text-left p-6 glass-card hover:bg-white/15 transition-all duration-300 group"
+                className="text-left p-8 royal-card hover:bg-white/5 transition-all duration-500 group border-transparent hover:border-royal-gold/20"
                 disabled={isLoading}
               >
-                <div className="flex items-start space-x-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${example.color} flex items-center justify-center flex-shrink-0 group-hover:shadow-lg transition-all duration-300`}>
-                    <example.icon className="w-6 h-6 text-white" />
+                <div className="flex items-start space-x-6">
+                  <div className={`w-14 h-14 rounded-[1.5rem] bg-gradient-to-br ${example.color} flex items-center justify-center flex-shrink-0 group-hover:shadow-3xl transition-all duration-500 border border-white/5`}>
+                    <example.icon className="w-7 h-7 text-white" />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-xs font-medium text-primary-300 bg-primary-500/20 px-2 py-1 rounded-full">
+                    <div className="flex items-center space-x-2 mb-4">
+                      <span className="text-[9px] font-black text-royal-gold bg-royal-gold/10 px-3 py-1.5 rounded-full border border-royal-gold/20 uppercase tracking-widest">
                         {example.category}
                       </span>
                     </div>
-                    <p className="text-white/90 text-sm leading-relaxed group-hover:text-white transition-colors">
+                    <p className="text-white/40 text-sm leading-relaxed font-medium group-hover:text-white/80 transition-colors duration-500 italic">
                       "{example.text}"
                     </p>
                   </div>
@@ -289,17 +294,18 @@ export default function QueryInterface({ onSubmit }: QueryInterfaceProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-2xl flex items-center justify-center z-20"
+              className="absolute inset-0 bg-black/60 backdrop-blur-md rounded-[2.5rem] flex items-center justify-center z-20 border border-royal-gold/10"
             >
               <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 relative">
+                <div className="w-24 h-24 mx-auto mb-8 relative">
                   <motion.div
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    className="absolute inset-0 rounded-full border-4 border-white/20 border-t-white/80"
+                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 rounded-full border-[2px] border-royal-gold/10 border-t-royal-gold"
                   />
+                  <div className="absolute inset-4 rounded-full bg-royal-gold/5 animate-pulse" />
                 </div>
-                <p className="text-white font-medium">Preparing AI agents...</p>
+                <p className="text-royal-gold font-black text-xs uppercase tracking-[0.5em] animate-pulse">Summoning Sovereign Intelligence</p>
               </div>
             </motion.div>
           )}

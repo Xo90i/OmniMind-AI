@@ -130,54 +130,85 @@ export default function AgentWorkflow({ query, onBack }: AgentWorkflowProps) {
 
   if (isLoading && !snapshot) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8 flex items-center justify-center">
-        <div className="card max-w-xl w-full text-center">
-          <p className="text-gray-700">Starting decision workflow...</p>
+      <div className="min-h-screen bg-royal-black py-12 flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 royal-mesh opacity-20" />
+        <div className="royal-card max-w-xl w-full text-center p-20 relative z-10 border-royal-gold/10">
+          <div className="w-24 h-24 mx-auto mb-8 relative">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 rounded-full border-[2px] border-royal-gold/10 border-t-royal-gold"
+            />
+            <div className="absolute inset-4 rounded-full bg-royal-gold/5 animate-pulse" />
+          </div>
+          <p className="text-royal-gold font-black text-xs uppercase tracking-[0.5em] animate-pulse">Initializing Sovereign Protocol</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
+    <div className="min-h-screen bg-royal-black py-12 relative overflow-hidden">
+      <div className="absolute inset-0 royal-mesh opacity-10" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="mb-12">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
+            className="flex items-center gap-3 text-white/40 hover:text-royal-gold transition-colors mb-8 group"
           >
-            <ArrowLeftIcon className="h-4 w-4" />
-            Back to Query
+            <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:border-royal-gold/50 transition-all">
+              <ArrowLeftIcon className="h-4 w-4" />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest">Withdraw Mandate</span>
           </button>
 
-          <div className="card">
-            <div className="flex flex-wrap justify-between gap-4 mb-4">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">AI Agent Analysis in Progress</h1>
-                <p className="text-gray-600 mb-2">
-                  <span className="font-medium">Query:</span> {query}
-                </p>
-                <p className="text-sm text-gray-500">
-                  <span className="font-medium">Session:</span> {sessionId}
-                </p>
+          <div className="royal-card p-10 border-royal-gold/20">
+            <div className="flex flex-wrap justify-between items-start gap-8 mb-10">
+              <div className="flex-1 min-w-[300px]">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-2 h-2 rounded-full bg-royal-gold animate-pulse shadow-[0_0_10px_rgba(212,175,55,1)]" />
+                  <h1 className="text-2xl font-black text-white uppercase tracking-tighter italic">Sovereign Analysis in Flux</h1>
+                </div>
+                <div className="bg-white/5 rounded-2xl p-6 border border-white/5 group hover:border-royal-gold/20 transition-all duration-500">
+                  <p className="text-royal-gold/60 text-[10px] font-black uppercase tracking-[0.2em] mb-2">The Mandate</p>
+                  <p className="text-white/80 font-medium leading-relaxed">
+                    "{query}"
+                  </p>
+                </div>
+                <div className="mt-4 flex items-center gap-2">
+                   <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">Session Authority:</span>
+                   <code className="text-[10px] font-black text-royal-silver bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                    {sessionId}
+                   </code>
+                </div>
               </div>
               <button
                 onClick={handleExport}
                 disabled={!sessionId}
-                className="btn-secondary flex items-center gap-2 h-fit"
+                className="btn-primary flex items-center gap-3 h-fit px-8 py-4 text-[10px] font-black uppercase tracking-widest"
               >
-                <ArrowDownTrayIcon className="h-5 w-5" />
-                Export JSON
+                <ArrowDownTrayIcon className="h-4 w-4" />
+                Export Archive
               </button>
             </div>
-            <WorkflowProgress steps={workflowSteps} currentStep={currentStep} />
+            <div className="pt-6 border-t border-white/5">
+              <WorkflowProgress steps={workflowSteps} currentStep={currentStep} />
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <div className="card">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Active AI Agents</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          <div className="lg:col-span-2 space-y-10">
+            <div className="royal-card p-10">
+              <div className="flex items-center justify-between mb-10">
+                <h2 className="text-xl font-black text-white uppercase tracking-tight italic">Active AI Constructs</h2>
+                <div className="px-4 py-2 bg-royal-gold/5 rounded-full border border-royal-gold/20">
+                   <span className="text-[10px] font-black text-royal-gold uppercase tracking-widest leading-none">
+                    {agents.filter(a => a.status === 'active').length} Active
+                   </span>
+                </div>
+              </div>
               <div className="space-y-4">
                 <AnimatePresence>
                   {agents.map((agent, index) => (
@@ -194,40 +225,59 @@ export default function AgentWorkflow({ query, onBack }: AgentWorkflowProps) {
               </div>
             </div>
 
-            <div className="card mt-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Agent Discussion</h2>
-              <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
+            <div className="royal-card p-10">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-xl font-black text-white uppercase tracking-tight italic">Construct Dialectics</h2>
+                <div className="w-10 h-1 rounded-full bg-gradient-to-r from-royal-gold to-transparent" />
+              </div>
+              <div className="space-y-4 max-h-96 overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
                 {(snapshot?.messages ?? []).map((message, index) => (
-                  <div key={`${message.timestamp}-${index}`} className="border border-gray-200 rounded-lg p-3">
-                    <p className="text-xs text-gray-500 mb-1">
-                      {message.agent_name} · {message.stage}
-                    </p>
-                    <p className="text-sm text-gray-800 whitespace-pre-wrap">{message.content}</p>
-                  </div>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    key={`${message.timestamp}-${index}`} 
+                    className="bg-white/5 rounded-2xl p-5 border border-white/5 hover:border-royal-gold/20 transition-all duration-500"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-[10px] font-black text-royal-gold uppercase tracking-[0.2em]">
+                        {message.agent_name}
+                      </p>
+                      <span className="text-[9px] font-black text-white/20 uppercase tracking-widest px-3 py-1 bg-white/5 rounded-full">
+                        {message.stage}
+                      </span>
+                    </div>
+                    <p className="text-sm text-white/60 font-medium leading-relaxed italic">"{message.content}"</p>
+                  </motion.div>
                 ))}
                 {snapshot?.messages.length === 0 && (
-                  <p className="text-sm text-gray-500">Messages will appear as agents reason through the decision.</p>
+                  <p className="text-xs font-black text-white/20 uppercase tracking-[0.3em] text-center py-20">Dialectal synthesis awaiting initiation...</p>
                 )}
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-10">
               <SimulationResults simulation={snapshot?.simulation} />
             </div>
           </div>
 
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 space-y-10">
             <ConsensusPanel consensus={snapshot?.consensus} />
-            <div className="card">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Realtime Events</h3>
-              <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+            
+            <div className="royal-card p-10">
+              <h3 className="text-lg font-black text-white uppercase tracking-tight mb-8 italic">Temporal Updates</h3>
+              <div className="space-y-3 max-h-80 overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
                 {events.map((event, index) => (
-                  <div key={`${event.type}-${index}`} className="text-sm border border-gray-200 rounded-md px-3 py-2">
-                    <p className="font-medium text-gray-800">{event.type}</p>
-                    <p className="text-gray-600">{event.message}</p>
-                  </div>
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    key={`${event.type}-${index}`} 
+                    className="text-[10px] bg-white/5 rounded-xl px-5 py-4 border border-white/5"
+                  >
+                    <p className="font-black text-royal-gold uppercase tracking-widest mb-1">{event.type}</p>
+                    <p className="text-white/40 font-medium uppercase tracking-tight">{event.message}</p>
+                  </motion.div>
                 ))}
-                {events.length === 0 && <p className="text-sm text-gray-500">Waiting for stream updates...</p>}
+                {events.length === 0 && <p className="text-xs font-black text-white/20 uppercase tracking-widest text-center py-10">Waiting for stream...</p>}
               </div>
             </div>
           </div>

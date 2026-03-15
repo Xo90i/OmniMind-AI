@@ -21,15 +21,15 @@ interface AgentCardProps {
 
 // Named persona colours and emojis matching master spec
 const PERSONA_META: Record<string, { color: string; bg: string; border: string; icon: string }> = {
-  Priya:              { color: 'text-purple-700', bg: 'bg-purple-50',  border: 'border-purple-200', icon: '🔬' },
-  Arjun:              { color: 'text-amber-700',  bg: 'bg-amber-50',   border: 'border-amber-200',  icon: '⚠️' },
-  Kavya:              { color: 'text-green-700',  bg: 'bg-green-50',   border: 'border-green-200',  icon: '💰' },
-  Ravi:               { color: 'text-blue-700',   bg: 'bg-blue-50',    border: 'border-blue-200',   icon: '🗺️' },
-  Meera:              { color: 'text-rose-700',   bg: 'bg-rose-50',    border: 'border-rose-200',   icon: '🏛️' },
-  Planner:            { color: 'text-gray-700',   bg: 'bg-gray-50',    border: 'border-gray-200',   icon: '🧠' },
-  'Debate Moderator': { color: 'text-indigo-700', bg: 'bg-indigo-50',  border: 'border-indigo-200', icon: '⚖️' },
-  'Simulation Engine':{ color: 'text-cyan-700',   bg: 'bg-cyan-50',    border: 'border-cyan-200',   icon: '📊' },
-  'Consensus Engine': { color: 'text-teal-700',   bg: 'bg-teal-50',    border: 'border-teal-200',   icon: '✅' },
+  Priya:              { color: 'text-royal-gold', bg: 'bg-white/5',  border: 'border-royal-gold/20', icon: '🔬' },
+  Arjun:              { color: 'text-royal-silver',  bg: 'bg-white/5',   border: 'border-white/10',  icon: '⚠️' },
+  Kavya:              { color: 'text-royal-gold',  bg: 'bg-royal-gold/5',   border: 'border-royal-gold/30',  icon: '💰' },
+  Ravi:               { color: 'text-royal-silver',   bg: 'bg-white/5',    border: 'border-white/10',   icon: '🗺️' },
+  Meera:              { color: 'text-royal-gold',   bg: 'bg-white/5',    border: 'border-royal-gold/20',   icon: '🏛️' },
+  Planner:            { color: 'text-white/60',   bg: 'bg-white/5',    border: 'border-white/5',   icon: '🧠' },
+  'Debate Moderator': { color: 'text-royal-gold', bg: 'bg-royal-gold/5',  border: 'border-royal-gold/40', icon: '⚖️' },
+  'Simulation Engine':{ color: 'text-royal-silver',   bg: 'bg-white/5',    border: 'border-white/20',   icon: '📊' },
+  'Consensus Engine': { color: 'text-royal-gold',   bg: 'bg-royal-gold/10',    border: 'border-royal-gold/50',   icon: '✅' },
 };
 
 const statusIcons = {
@@ -45,61 +45,80 @@ export default function AgentCard({ agent }: AgentCardProps) {
 
   return (
     <div
-      className={`border rounded-xl p-4 transition-all duration-300 ${meta.bg} ${meta.border}
-        ${isActive ? 'ring-2 ring-offset-1 ring-blue-400 shadow-md' : ''}`}
+      className={`royal-card p-6 transition-all duration-500 border-white/5 group relative overflow-hidden
+        ${isActive ? 'border-royal-gold/30 shadow-[0_0_30px_rgba(212,175,55,0.1)]' : 'hover:border-white/20'}`}
     >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-full bg-white flex items-center justify-center text-xl shadow-sm ${meta.border} border`}>
-            {meta.icon}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <div className={`w-14 h-14 rounded-[1.25rem] bg-royal-black flex items-center justify-center text-2xl shadow-inner border border-white/5 transition-transform duration-500 group-hover:scale-110`}>
+              {meta.icon}
+            </div>
+            <div>
+              <h3 className="font-black text-white uppercase tracking-tight italic group-hover:text-royal-gold transition-colors">{agent.name}</h3>
+              <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">{agent.role}</p>
+            </div>
           </div>
-          <div>
-            <h3 className={`font-semibold ${meta.color}`}>{agent.name}</h3>
-            <p className="text-xs text-gray-500">{agent.role}</p>
+          <div className={`flex flex-col items-end gap-1`}>
+            <div className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-widest ${isActive ? 'text-royal-gold' : 'text-white/20'}`}>
+              <StatusIcon className="h-4 w-4" />
+              <span>{agent.status}</span>
+            </div>
+            {isActive && (
+              <div className="w-1.5 h-1.5 rounded-full bg-royal-gold animate-ping shadow-[0_0_10px_rgba(212,175,55,1)]" />
+            )}
           </div>
         </div>
-        <div className={`flex items-center gap-1 text-xs font-medium ${meta.color}`}>
-          <StatusIcon className="h-4 w-4" />
-          <span className="capitalize">{agent.status}</span>
-          {isActive && (
-            <span className="ml-1 inline-block w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-          )}
-        </div>
+
+        {isActive && (
+          <div className="space-y-3 mb-2">
+            <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+              <span className="text-royal-gold animate-pulse">Synthesizing...</span>
+              <span className="text-white/40">{agent.progress}%</span>
+            </div>
+            <div className="w-full bg-white/5 rounded-full h-[3px] overflow-hidden border border-white/5">
+              <motion.div
+                className="bg-gradient-to-r from-transparent via-royal-gold to-transparent h-full"
+                initial={{ x: '-100%' }}
+                animate={{ x: `${agent.progress - 100}%` }}
+                transition={{ duration: 0.5 }}
+              />
+            </div>
+          </div>
+        )}
+
+        {agent.status === 'completed' && (
+          <div className="flex items-center gap-2">
+            <div className="h-[1px] w-4 bg-royal-gold/30" />
+            <p className="text-[10px] font-black text-royal-gold uppercase tracking-[0.2em]">Mandate Content Transmitted</p>
+          </div>
+        )}
+        {agent.status === 'pending' && (
+          <div className="flex items-center gap-2">
+            <div className="h-[1px] w-4 bg-white/10" />
+            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Awaiting Authorization</p>
+          </div>
+        )}
+
+        {agent.provider && agent.provider !== 'fallback' && (
+          <div className="mt-6 pt-6 border-t border-white/5 flex flex-wrap gap-4">
+            <div className="flex flex-col">
+              <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Architecture</span>
+              <span className="text-[10px] font-black text-royal-silver uppercase tracking-tight">{agent.provider}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Cognitive Model</span>
+              <span className="text-[10px] font-black text-white/40 uppercase tracking-tight">{agent.model}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Latency</span>
+              <span className="text-[10px] font-black text-white/40 uppercase tracking-tight">{agent.latency_ms}ms</span>
+            </div>
+          </div>
+        )}
       </div>
-
-      {isActive && (
-        <div className="space-y-1 mb-2">
-          <div className="flex justify-between text-xs text-gray-500">
-            <span>Thinking...</span>
-            <span>{agent.progress}%</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-1.5">
-            <motion.div
-              className="bg-blue-500 h-1.5 rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${agent.progress}%` }}
-              transition={{ duration: 0.5 }}
-            />
-          </div>
-        </div>
-      )}
-
-      {agent.status === 'completed' && (
-        <p className={`text-xs ${meta.color}`}>✓ Analysis complete</p>
-      )}
-      {agent.status === 'pending' && (
-        <p className="text-xs text-gray-400">Waiting for previous agents...</p>
-      )}
-
-      {/* Gradient AI metadata — visible for judges */}
-      {agent.provider && agent.provider !== 'fallback' && (
-        <div className="mt-2 pt-2 border-t border-gray-100 flex flex-wrap gap-2">
-          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">{agent.provider}</span>
-          {agent.model && <span className="text-xs text-gray-400">{agent.model}</span>}
-          {agent.tokens != null && <span className="text-xs text-gray-400">{agent.tokens} tokens</span>}
-          {agent.latency_ms != null && <span className="text-xs text-gray-400">{agent.latency_ms}ms</span>}
-        </div>
-      )}
     </div>
   );
 }

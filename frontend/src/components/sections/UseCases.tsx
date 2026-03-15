@@ -17,7 +17,7 @@ const useCases = [
     title: 'Business Strategy',
     description: 'Strategic planning, market analysis, and business optimization',
     icon: BuildingOfficeIcon,
-    color: 'from-blue-500 to-blue-600',
+    color: 'from-royal-gold to-royal-gold-dark',
     examples: [
       'Market entry strategies',
       'Product launch planning',
@@ -37,7 +37,7 @@ const useCases = [
     title: 'Education & Career',
     description: 'Career planning, skill development, and educational pathways',
     icon: AcademicCapIcon,
-    color: 'from-green-500 to-green-600',
+    color: 'from-white/10 to-white/5',
     examples: [
       'Career transition planning',
       'Skill gap analysis',
@@ -57,7 +57,7 @@ const useCases = [
     title: 'Financial Planning',
     description: 'Investment strategies, risk assessment, and financial optimization',
     icon: ChartBarIcon,
-    color: 'from-purple-500 to-purple-600',
+    color: 'from-royal-gold/20 to-royal-gold/40',
     examples: [
       'Investment portfolio optimization',
       'Retirement planning',
@@ -77,7 +77,7 @@ const useCases = [
     title: 'Operations & Process',
     description: 'Process optimization, efficiency improvement, and operational excellence',
     icon: CogIcon,
-    color: 'from-orange-500 to-orange-600',
+    color: 'from-white/20 to-white/5',
     examples: [
       'Process optimization',
       'Supply chain management',
@@ -97,7 +97,7 @@ const useCases = [
     title: 'Policy & Governance',
     description: 'Policy analysis, regulatory compliance, and governance strategies',
     icon: GlobeAltIcon,
-    color: 'from-indigo-500 to-indigo-600',
+    color: 'from-royal-gold to-white/10',
     examples: [
       'Policy impact analysis',
       'Regulatory compliance',
@@ -117,7 +117,7 @@ const useCases = [
     title: 'Healthcare & Wellness',
     description: 'Health optimization, treatment planning, and wellness strategies',
     icon: HeartIcon,
-    color: 'from-red-500 to-red-600',
+    color: 'from-royal-gold-dark to-royal-black',
     examples: [
       'Treatment optimization',
       'Wellness planning',
@@ -140,45 +140,50 @@ export default function UseCases() {
   const [selectedCase, setSelectedCase] = useState(useCases[0]);
 
   return (
-    <section id="use-cases" ref={ref} className="py-24 sm:py-32 relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section id="use-cases" ref={ref} className="py-32 sm:py-48 bg-royal-black text-white relative">
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-royal-gold/20 to-transparent" />
+      
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mx-auto max-w-3xl text-center mb-20"
+          className="mx-auto max-w-4xl text-center mb-32"
         >
-          <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl font-display mb-6">
-            Real-World Applications
+          <motion.span className="text-xs font-black uppercase tracking-[0.5em] text-royal-gold mb-6 block">
+            Domain Dominance
+          </motion.span>
+          <h2 className="text-4xl font-black tracking-tighter text-white sm:text-6xl mb-8 uppercase">
+            Sovereign Applications
           </h2>
-          <p className="text-xl text-white/80 leading-8">
-            Discover how OmniMind AI transforms decision-making across industries and domains
+          <p className="text-xl text-white/40 leading-8 max-w-2xl mx-auto font-medium">
+            Observing the OmniMind transformation across the global strategic landscape.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
           {/* Use case cards */}
-          <div className="lg:col-span-1 space-y-4">
+          <div className="lg:col-span-1 space-y-6">
             {useCases.map((useCase, index) => (
               <motion.div
                 key={useCase.id}
                 initial={{ opacity: 0, x: -30 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 onClick={() => setSelectedCase(useCase)}
-                className={`cursor-pointer p-6 rounded-2xl border transition-all duration-300 ${
+                className={`cursor-pointer p-8 rounded-3xl border transition-all duration-500 relative group overflow-hidden ${
                   selectedCase.id === useCase.id
-                    ? 'bg-white/20 border-white/30 shadow-xl'
-                    : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                    ? 'bg-royal-gold/10 border-royal-gold/50 shadow-2xl scale-[1.02]'
+                    : 'bg-white/5 border-white/5 hover:border-royal-silver/30 hover:bg-white/10'
                 }`}
               >
-                <div className="flex items-center space-x-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${useCase.color} flex items-center justify-center`}>
-                    <useCase.icon className="w-6 h-6 text-white" />
+                <div className="flex items-center space-x-6">
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${useCase.color} flex items-center justify-center border border-white/10 shadow-2xl`}>
+                    <useCase.icon className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white text-lg">{useCase.title}</h3>
-                    <p className="text-white/70 text-sm">{useCase.description}</p>
+                    <h3 className="font-black text-white text-lg uppercase tracking-tight">{useCase.title}</h3>
+                    <p className="text-white/40 text-xs font-medium uppercase tracking-widest">{useCase.description.split(',')[0]}...</p>
                   </div>
                 </div>
               </motion.div>
@@ -189,66 +194,68 @@ export default function UseCases() {
           <div className="lg:col-span-2">
             <motion.div
               key={selectedCase.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="glass-card p-8 h-full"
+              className="royal-card p-12 sm:p-20 h-full relative"
             >
-              <div className="flex items-center space-x-4 mb-8">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${selectedCase.color} flex items-center justify-center`}>
-                  <selectedCase.icon className="w-8 h-8 text-white" />
+              <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-6 sm:space-y-0 sm:space-x-10 mb-16">
+                <div className={`w-24 h-24 rounded-[2rem] bg-gradient-to-br ${selectedCase.color} flex items-center justify-center border border-white/10 shadow-3xl shrink-0`}>
+                  <selectedCase.icon className="w-12 h-12 text-white" />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-white">{selectedCase.title}</h3>
-                  <p className="text-white/80">{selectedCase.description}</p>
+                <div className="text-center sm:text-left">
+                  <h3 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter italic">{selectedCase.title}</h3>
+                  <p className="text-royal-gold text-xs font-black uppercase tracking-[0.2em]">{selectedCase.description}</p>
                 </div>
               </div>
 
               {/* Metrics */}
-              <div className="grid grid-cols-3 gap-4 mb-8">
-                <div className="text-center p-4 bg-white/10 rounded-xl">
-                  <div className="text-2xl font-bold text-white">{selectedCase.metrics.accuracy}</div>
-                  <div className="text-white/70 text-sm">Accuracy</div>
+              <div className="grid grid-cols-3 gap-8 mb-16">
+                <div className="text-center p-8 bg-white/5 rounded-3xl border border-white/5 group hover:border-royal-gold/30 transition-all duration-500">
+                  <div className="text-3xl font-black text-white mb-2 tracking-tighter">{selectedCase.metrics.accuracy}</div>
+                  <div className="text-royal-gold/60 text-[10px] font-black uppercase tracking-widest">Accuracy</div>
                 </div>
-                <div className="text-center p-4 bg-white/10 rounded-xl">
-                  <div className="text-2xl font-bold text-white">{selectedCase.metrics.timeReduction}</div>
-                  <div className="text-white/70 text-sm">Time Saved</div>
+                <div className="text-center p-8 bg-white/5 rounded-3xl border border-white/5 group hover:border-royal-gold/30 transition-all duration-500">
+                  <div className="text-3xl font-black text-white mb-2 tracking-tighter">{selectedCase.metrics.timeReduction}</div>
+                  <div className="text-royal-gold/60 text-[10px] font-black uppercase tracking-widest">Temporal Gain</div>
                 </div>
-                <div className="text-center p-4 bg-white/10 rounded-xl">
-                  <div className="text-2xl font-bold text-white">{selectedCase.metrics.satisfaction}</div>
-                  <div className="text-white/70 text-sm">Satisfaction</div>
+                <div className="text-center p-8 bg-white/5 rounded-3xl border border-white/5 group hover:border-royal-gold/30 transition-all duration-500">
+                  <div className="text-3xl font-black text-white mb-2 tracking-tighter">{selectedCase.metrics.satisfaction}</div>
+                  <div className="text-royal-gold/60 text-[10px] font-black uppercase tracking-widest">Dominance</div>
                 </div>
               </div>
 
               {/* Case study */}
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-lg font-semibold text-white mb-2">Case Study: {selectedCase.case.title}</h4>
+              <div className="space-y-10">
+                <div className="border-b border-white/5 pb-6">
+                  <h4 className="text-xl font-black text-white uppercase italic tracking-tight">Case Study: {selectedCase.case.title}</h4>
                 </div>
                 
-                <div>
-                  <h5 className="font-medium text-primary-300 mb-2">Challenge</h5>
-                  <p className="text-white/80 text-sm leading-relaxed">{selectedCase.case.problem}</p>
-                </div>
-                
-                <div>
-                  <h5 className="font-medium text-secondary-300 mb-2">Solution</h5>
-                  <p className="text-white/80 text-sm leading-relaxed">{selectedCase.case.solution}</p>
-                </div>
-                
-                <div>
-                  <h5 className="font-medium text-accent-300 mb-2">Results</h5>
-                  <p className="text-white/80 text-sm leading-relaxed">{selectedCase.case.result}</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                   <div>
+                    <h5 className="text-[10px] font-black text-royal-gold uppercase tracking-[0.2em] mb-4">Strategic Deficit</h5>
+                    <p className="text-white/40 text-sm leading-relaxed font-medium">{selectedCase.case.problem}</p>
+                  </div>
+                  
+                  <div>
+                    <h5 className="text-[10px] font-black text-royal-gold uppercase tracking-[0.2em] mb-4">The Solution</h5>
+                    <p className="text-white/40 text-sm leading-relaxed font-medium">{selectedCase.case.solution}</p>
+                  </div>
+                  
+                  <div>
+                    <h5 className="text-[10px] font-black text-royal-gold uppercase tracking-[0.2em] mb-4">Sovereign Result</h5>
+                    <p className="text-white/40 text-sm leading-relaxed font-medium">{selectedCase.case.result}</p>
+                  </div>
                 </div>
               </div>
 
               {/* Examples */}
-              <div className="mt-8">
-                <h5 className="font-medium text-white mb-4">Common Applications</h5>
-                <div className="grid grid-cols-2 gap-2">
+              <div className="mt-16 pt-16 border-t border-white/5">
+                <h5 className="text-[10px] font-black text-white uppercase tracking-[0.5em] mb-8 text-center sm:text-left">Standard Mandates</h5>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                   {selectedCase.examples.map((example, index) => (
-                    <div key={index} className="flex items-center text-white/70 text-sm">
-                      <div className="w-1.5 h-1.5 bg-primary-400 rounded-full mr-3" />
+                    <div key={index} className="flex items-center text-white/30 text-[9px] font-black uppercase tracking-widest bg-white/5 px-4 py-3 rounded-full border border-white/5 hover:border-royal-gold/30 hover:text-white/60 transition-all duration-300">
+                      <div className="w-1.5 h-1.5 bg-royal-gold rounded-full mr-2 shadow-[0_0_5px_rgba(212,175,55,1)]" />
                       {example}
                     </div>
                   ))}

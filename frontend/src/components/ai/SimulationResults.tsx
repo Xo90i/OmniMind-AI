@@ -55,70 +55,93 @@ export default function SimulationResults({ simulation }: SimulationResultsProps
   }));
 
   return (
-    <div className="card">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">
-        Scenario Simulation Results
-      </h2>
+    <div className="royal-card p-10">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-xl font-black text-white uppercase tracking-tight italic">
+          Projection Simulations
+        </h2>
+        <div className="h-[1px] w-20 bg-gradient-to-r from-royal-gold to-transparent" />
+      </div>
 
       {simulation && (
-        <p className="text-sm text-gray-600 mb-4">
-          Recommended scenario: <span className="font-semibold">{simulation.recommended_scenario}</span> · Confidence {Math.round(simulation.confidence * 100)}%
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-10 bg-white/5 py-3 px-6 rounded-full border border-white/5 w-fit">
+          High-Fidelity Recommendation: <span className="text-royal-gold italic">{simulation.recommended_scenario}</span> · <span className="text-royal-silver">{Math.round(simulation.confidence * 100)}% Certainty</span>
         </p>
       )}
 
-      <div className="mb-8">
+      <div className="mb-12 p-6 bg-white/5 rounded-3xl border border-white/5 relative overflow-hidden group">
+        <div className="absolute inset-0 bg-gradient-to-b from-royal-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+            <XAxis 
+              dataKey="name" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10, fontWeight: 900 }} 
+            />
+            <YAxis 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10, fontWeight: 900 }}
+              tickFormatter={(value) => `₹${value}K`}
+            />
             <Tooltip 
+              contentStyle={{ 
+                backgroundColor: '#0A0A0A', 
+                border: '1px solid rgba(212, 175, 55, 0.2)', 
+                borderRadius: '12px',
+                fontSize: '10px',
+                fontWeight: '900',
+                textTransform: 'uppercase'
+              }}
+              cursor={{ fill: 'rgba(255,255,255,0.03)' }}
               formatter={(value, name) => [
                 name === 'ROI' ? `${value}%` : `₹${value}K`,
                 name
               ]}
             />
-            <Bar dataKey="Investment" fill="#3b82f6" name="Investment" />
-            <Bar dataKey="Profit" fill="#22c55e" name="Expected Profit" />
+            <Bar dataKey="Investment" fill="#D4AF37" radius={[4, 4, 0, 0]} name="Investment" />
+            <Bar dataKey="Profit" fill="#C0C0C0" radius={[4, 4, 0, 0]} name="Expected Profit" />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {simulationData.map((scenario, index) => (
           <motion.div
             key={scenario.scenario}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.1 }}
-            className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+            className="royal-card p-6 bg-white/[0.02] border-white/5 hover:border-royal-gold/20 transition-all duration-500 group"
           >
-            <h3 className="font-semibold text-gray-900 mb-3">{scenario.scenario}</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Investment:</span>
-                <span className="font-medium">₹{(scenario.investment / 1000).toFixed(0)}K</span>
+            <h3 className="text-xs font-black text-white uppercase tracking-widest mb-6 group-hover:text-royal-gold transition-colors italic">{scenario.scenario}</h3>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">Commitment</span>
+                <span className="text-xs font-bold text-white/80">₹{(scenario.investment / 1000).toFixed(0)}K</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Expected Profit:</span>
-                <span className="font-medium text-green-600">₹{(scenario.expectedProfit / 1000).toFixed(0)}K</span>
+              <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">Target Yield</span>
+                <span className="text-xs font-bold text-royal-gold">₹{(scenario.expectedProfit / 1000).toFixed(0)}K</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">ROI:</span>
-                <span className="font-medium">{scenario.roi}%</span>
+              <div className="flex justify-between items-center pt-2">
+                <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">Efficiency (ROI)</span>
+                <span className="text-xs font-bold text-white">{scenario.roi}%</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Risk Level:</span>
-                <span className={`font-medium ${
-                  scenario.risk === 'Low' ? 'text-green-600' :
-                  scenario.risk === 'Medium' ? 'text-yellow-600' : 'text-red-600'
+              <div className="flex justify-between items-center">
+                <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">Risk Index</span>
+                <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${
+                  scenario.risk === 'Low' ? 'text-green-500/80 border-green-500/20 bg-green-500/5' :
+                  scenario.risk === 'Medium' ? 'text-royal-gold border-royal-gold/20 bg-royal-gold/5' : 'text-red-500/80 border-red-500/20 bg-red-500/5'
                 }`}>
                   {scenario.risk}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Timeline:</span>
-                <span className="font-medium">{scenario.timeline}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">Horizon</span>
+                <span className="text-[10px] font-black text-white/30 uppercase">{scenario.timeline}</span>
               </div>
             </div>
           </motion.div>

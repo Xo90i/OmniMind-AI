@@ -33,22 +33,22 @@ export default function ParticleBackground() {
       const particles: Particle[] = [];
       const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 15000));
       
-      const colors = [
-        'rgba(59, 130, 246, 0.6)',   // Blue
-        'rgba(168, 85, 247, 0.6)',   // Purple
-        'rgba(34, 197, 94, 0.6)',    // Green
-        'rgba(251, 191, 36, 0.6)',   // Yellow
-        'rgba(239, 68, 68, 0.6)',    // Red
+const colors = [
+        'rgba(212, 175, 55, 0.4)',   // Gold
+        'rgba(192, 192, 192, 0.4)', // Silver
+        'rgba(255, 255, 255, 0.2)', // White glow
+        'rgba(212, 175, 55, 0.15)',  // Subtle Gold
+        'rgba(11, 11, 11, 0.8)',    // Deep Charcoal
       ];
 
       for (let i = 0; i < particleCount; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          size: Math.random() * 3 + 1,
-          opacity: Math.random() * 0.5 + 0.2,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          size: Math.random() * 2 + 0.5,
+          opacity: Math.random() * 0.4 + 0.1,
           color: colors[Math.floor(Math.random() * colors.length)],
         });
       }
@@ -68,29 +68,32 @@ export default function ParticleBackground() {
         if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
         if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
 
-        // Keep particles in bounds
-        particle.x = Math.max(0, Math.min(canvas.width, particle.x));
-        particle.y = Math.max(0, Math.min(canvas.height, particle.y));
-
         // Draw particle
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = particle.color;
+        const gradient = ctx.createRadialGradient(
+          particle.x, particle.y, 0,
+          particle.x, particle.y, particle.size
+        );
+        gradient.addColorStop(0, particle.color);
+        gradient.addColorStop(1, 'transparent');
+        
+        ctx.arc(particle.x, particle.y, particle.size * 2, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
         ctx.fill();
 
-        // Draw connections to nearby particles
+        // Draw connections to nearby particles with gold tint
         particlesRef.current.slice(index + 1).forEach(otherParticle => {
           const dx = particle.x - otherParticle.x;
           const dy = particle.y - otherParticle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 120) {
-            const opacity = (120 - distance) / 120 * 0.2;
+          if (distance < 150) {
+            const opacity = (150 - distance) / 150 * 0.1;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
-            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = `rgba(212, 175, 55, ${opacity})`;
+            ctx.lineWidth = 0.3;
             ctx.stroke();
           }
         });
