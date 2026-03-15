@@ -22,7 +22,11 @@ const floatingElements = [
   { icon: Shield, delay: 5, x: '70%', y: '60%' },
 ];
 
-export default function Hero() {
+interface HeroProps {
+  onGetStarted: () => void;
+}
+
+export default function Hero({ onGetStarted }: HeroProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -113,6 +117,7 @@ export default function Hero() {
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(212, 175, 55, 0.4)" }}
               whileTap={{ scale: 0.95 }}
+              onClick={onGetStarted}
               className="btn-primary text-sm font-black uppercase tracking-widest px-12 py-5 flex items-center gap-4 glow-effect"
             >
               <Rocket className="w-5 h-5" />
@@ -123,6 +128,7 @@ export default function Hero() {
             <motion.button
               whileHover={{ scale: 1.05, borderColor: "#D4AF37", color: "#D4AF37" }}
               whileTap={{ scale: 0.95 }}
+              onClick={onGetStarted}
               className="btn-secondary text-sm font-black uppercase tracking-widest px-12 py-5 flex items-center gap-4"
             >
               <PlayIcon className="w-5 h-5" />

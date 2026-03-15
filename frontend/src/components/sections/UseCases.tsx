@@ -134,7 +134,11 @@ const useCases = [
   }
 ];
 
-export default function UseCases() {
+interface UseCasesProps {
+  onAction?: () => void;
+}
+
+export default function UseCases({ onAction }: UseCasesProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [selectedCase, setSelectedCase] = useState(useCases[0]);
@@ -203,14 +207,26 @@ export default function UseCases() {
                 <div className={`w-24 h-24 rounded-[2rem] bg-gradient-to-br ${selectedCase.color} flex items-center justify-center border border-white/10 shadow-3xl shrink-0`}>
                   <selectedCase.icon className="w-12 h-12 text-white" />
                 </div>
-                <div className="text-center sm:text-left">
-                  <h3 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter italic">{selectedCase.title}</h3>
-                  <p className="text-royal-gold text-xs font-black uppercase tracking-[0.2em]">{selectedCase.description}</p>
+                <div className="text-center sm:text-left flex-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <h3 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter italic">{selectedCase.title}</h3>
+                      <p className="text-royal-gold text-xs font-black uppercase tracking-[0.2em]">{selectedCase.description}</p>
+                    </div>
+                    <motion.button
+                      whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(212, 175, 55, 0.3)" }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={onAction}
+                      className="btn-primary text-[10px] font-black uppercase tracking-widest px-6 py-3 whitespace-nowrap"
+                    >
+                      Initiate Domain Mandate
+                    </motion.button>
+                  </div>
                 </div>
               </div>
 
               {/* Metrics */}
-              <div className="grid grid-cols-3 gap-8 mb-16">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
                 <div className="text-center p-8 bg-white/5 rounded-3xl border border-white/5 group hover:border-royal-gold/30 transition-all duration-500">
                   <div className="text-3xl font-black text-white mb-2 tracking-tighter">{selectedCase.metrics.accuracy}</div>
                   <div className="text-royal-gold/60 text-[10px] font-black uppercase tracking-widest">Accuracy</div>
@@ -267,4 +283,4 @@ export default function UseCases() {
       </div>
     </section>
   );
-}
+}

@@ -12,10 +12,18 @@ import AgentWorkflow from '@/components/ai/AgentWorkflow';
 import ParticleBackground from '@/components/ui/ParticleBackground';
 import LoadingScreen from '@/components/ui/LoadingScreen';
 
+import AuthModal from '@/components/ui/AuthModal';
+import Dashboard from '@/components/sections/Dashboard';
+import { Toaster } from 'react-hot-toast';
+
+import Pricing from '@/components/sections/Pricing';
+
 export default function HomePage() {
   const [showWorkflow, setShowWorkflow] = useState(false);
   const [currentQuery, setCurrentQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
 
   useEffect(() => {
     // Simulate initial loading
@@ -31,17 +39,56 @@ export default function HomePage() {
     setShowWorkflow(true);
   };
 
+  const handleAuthSuccess = (userData: { name: string; email: string }) => {
+    setUser(userData);
+    setIsAuthModalOpen(false);
+  };
+
   if (isLoading) {
     return <LoadingScreen />;
   }
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-royal-black">
+      <Toaster position="bottom-right" toastOptions={{
+        style: {
+          background: '#0A0A0A',
+          color: '#D4AF37',
+          border: '1px solid rgba(212, 175, 55, 0.2)',
+          fontSize: '10px',
+          fontWeight: '900',
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em'
+        }
+      }} />
       <div className="absolute inset-0 royal-mesh opacity-20 pointer-events-none" />
       <ParticleBackground />
       
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+        onSuccess={handleAuthSuccess}
+      />
+
+      <Header 
+        onSignIn={() => setIsAuthModalOpen(true)}
+        onSignUp={() => setIsAuthModalOpen(true)}
+        user={user}
+        onSignOut={() => setUser(null)}
+      />
+
       <AnimatePresence mode="wait">
-        {!showWorkflow ? (
+        {user ? (
+          <motion.div
+            key="dashboard"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.8 }}
+          >
+            <Dashboard user={user} />
+          </motion.div>
+        ) : !showWorkflow ? (
           <motion.div
             key="homepage"
             initial={{ opacity: 0 }}
@@ -50,11 +97,11 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="relative z-10"
           >
-            <Header />
-            <Hero />
-            <Features />
-            <HowItWorks />
-            <UseCases />
+            <Hero onGetStarted={() => setIsAuthModalOpen(true)} />
+            <Features onAction={() => setIsAuthModalOpen(true)} />
+            <HowItWorks onAction={() => setIsAuthModalOpen(true)} />
+            <UseCases onAction={() => setIsAuthModalOpen(true)} />
+            <Pricing onAction={() => setIsAuthModalOpen(true)} />
             
             <section className="py-48 px-4 relative overflow-hidden">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-royal-gold/20 to-transparent" />
@@ -125,4 +172,4 @@ export default function HomePage() {
       </AnimatePresence>
     </main>
   );
-}
+}

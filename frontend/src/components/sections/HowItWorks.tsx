@@ -62,7 +62,11 @@ const steps = [
   },
 ];
 
-export default function HowItWorks() {
+interface HowItWorksProps {
+  onAction?: () => void;
+}
+
+export default function HowItWorks({ onAction }: HowItWorksProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -182,6 +186,7 @@ export default function HowItWorks() {
           <motion.button
             whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(212, 175, 55, 0.3)" }}
             whileTap={{ scale: 0.95 }}
+            onClick={onAction}
             className="btn-primary text-xs font-black uppercase tracking-widest px-12 py-5 flex items-center gap-4 mx-auto"
           >
             Invoke The protocol
@@ -191,4 +196,4 @@ export default function HowItWorks() {
       </div>
     </section>
   );
-}
+}

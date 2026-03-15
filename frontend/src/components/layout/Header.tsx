@@ -5,7 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bars3Icon, XMarkIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { Brain, Zap, Target, Users } from 'lucide-react';
 
-export default function Header() {
+interface HeaderProps {
+  onSignIn: () => void;
+  onSignUp: () => void;
+  user: { name: string; email: string } | null;
+  onSignOut: () => void;
+}
+
+export default function Header({ onSignIn, onSignUp, user, onSignOut }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -24,10 +31,10 @@ export default function Header() {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <motion.div
-          whileHover={{ scale: 1.02 }}
-          className="flex lg:flex-1"
+           whileHover={{ scale: 1.02 }}
+           className="flex lg:flex-1"
         >
-          <a href="#" className="-m-1.5 p-1.5 flex items-center space-x-3 group">
+          <a href="/" className="-m-1.5 p-1.5 flex items-center space-x-3 group">
             <div className="relative">
               <motion.div
                 animate={{ rotate: 360 }}
@@ -88,21 +95,45 @@ export default function Header() {
         </div>
         
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-6">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-ghost text-xs font-black uppercase tracking-widest"
-          >
-            Sign In
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(212, 175, 55, 0.4)" }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-primary flex items-center gap-2 text-xs uppercase tracking-widest px-8"
-          >
-            <Zap className="w-4 h-4" />
-            Join Elite
-          </motion.button>
+          {!user ? (
+            <>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-ghost text-xs font-black uppercase tracking-widest"
+                onClick={onSignIn}
+              >
+                Sign In
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(212, 175, 55, 0.4)" }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary flex items-center gap-2 text-xs uppercase tracking-widest px-8"
+                onClick={onSignUp}
+              >
+                <Zap className="w-4 h-4" />
+                Join Elite
+              </motion.button>
+            </>
+          ) : (
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-royal-gold/10 border border-royal-gold/20 flex items-center justify-center font-black text-royal-gold text-xs shadow-inner">
+                  {user.name.charAt(0)}
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-black text-white uppercase tracking-wider">{user.name}</span>
+                  <span className="text-[8px] font-bold text-royal-gold/60 uppercase tracking-widest">Sovereign Tier</span>
+                </div>
+              </div>
+              <button 
+                onClick={onSignOut}
+                className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] hover:text-red-500/80 transition-colors"
+              >
+                Sever Link
+              </button>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -125,7 +156,7 @@ export default function Header() {
               className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-royal-black px-6 py-6 sm:max-w-sm border-l border-royal-gold/10 shadow-2xl"
             >
               <div className="flex items-center justify-between">
-                <a href="#" className="-m-1.5 p-1.5 flex items-center space-x-3">
+                <a href="/" className="-m-1.5 p-1.5 flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-royal-gold to-royal-gold-dark p-[1px]">
                     <div className="w-full h-full rounded-full bg-royal-black flex items-center justify-center p-2">
                        <Brain className="w-full h-full text-royal-gold" />
@@ -162,13 +193,41 @@ export default function Header() {
                     ))}
                   </div>
                   <div className="py-6 mt-8 border-t border-white/5 space-y-4">
-                    <button className="btn-secondary w-full justify-center">
-                      Sign In
-                    </button>
-                    <button className="btn-primary w-full justify-center flex items-center gap-2">
-                      <Zap className="w-4 h-4" />
-                      Get Started
-                    </button>
+                    {!user ? (
+                      <>
+                        <button 
+                          className="btn-secondary w-full justify-center"
+                          onClick={() => { setMobileMenuOpen(false); onSignIn(); }}
+                        >
+                          Sign In
+                        </button>
+                        <button 
+                          className="btn-primary w-full justify-center flex items-center gap-2"
+                          onClick={() => { setMobileMenuOpen(false); onSignUp(); }}
+                        >
+                          <Zap className="w-4 h-4" />
+                          Join Elite
+                        </button>
+                      </>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5">
+                          <div className="w-12 h-12 rounded-xl bg-royal-gold flex items-center justify-center font-black text-royal-black text-lg">
+                            {user.name.charAt(0)}
+                          </div>
+                          <div>
+                            <p className="text-sm font-black text-white italic">{user.name}</p>
+                            <p className="text-[10px] font-bold text-royal-gold/60 uppercase">Sovereign Tier</p>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={() => { setMobileMenuOpen(false); onSignOut(); }}
+                          className="btn-secondary w-full justify-center text-red-500/80 border-red-500/10"
+                        >
+                          Sever Link
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

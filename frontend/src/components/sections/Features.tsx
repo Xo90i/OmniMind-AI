@@ -49,7 +49,11 @@ const features = [
   },
 ];
 
-export default function Features() {
+interface FeaturesProps {
+  onAction?: () => void;
+}
+
+export default function Features({ onAction }: FeaturesProps) {
   return (
     <section id="features" className="py-32 sm:py-48 bg-royal-black text-white relative">
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-royal-gold/20 to-transparent" />
@@ -102,7 +106,10 @@ export default function Features() {
                 <dd className="flex flex-auto flex-col text-sm leading-7 text-white/40 font-medium">
                   <p className="flex-auto group-hover:text-white/60 transition-colors duration-500">{feature.description}</p>
                   <div className="mt-8 pt-8 border-t border-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <span className="text-royal-gold text-xs font-black uppercase tracking-widest cursor-pointer hover:underline">
+                    <span 
+                      className="text-royal-gold text-xs font-black uppercase tracking-widest cursor-pointer hover:underline"
+                      onClick={onAction}
+                    >
                       Explore Technicals
                     </span>
                   </div>
