@@ -43,3 +43,7 @@ yarn-error.log*
 .pnp/
 .pnp.js
 *.log
+.DS_Store
+node_modules/
+dist/
+build/
