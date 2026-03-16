@@ -315,6 +315,56 @@ class RAGService:
             for score, doc in scored[:top_k]
         ]
 
+    async def postgres_search(self, query: str, top_k: int = 5) -> list[KnowledgeDocument]:
+        """Search using pgvector in PostgreSQL."""
+        from core.database import AsyncSessionLocal
+        from models.entities import KnowledgeDocumentEntity
+        from sqlalchemy import select, func
+
+        q_vec = await self._embed(query)
+        
+        async with AsyncSessionLocal() as session:
+            # Using cosine distance (<=>) or inner product (<#>) or Euclidean distance (<->)
+            # Default to cosine distance for pgvector
+            stmt = select(KnowledgeDocumentEntity).order_by(
+                KnowledgeDocumentEntity.embedding.cosine_distance(q_vec)
+            ).limit(top_k)
+            
+            result = await session.execute(stmt)
+            docs = result.scalars().all()
+            
+            return [
+                KnowledgeDocument(
+                    id=str(d.id),
+                    title=d.title,
+                    source=d.source,
+                    score=0.0, # distance info not easily retrieved without separate label
+                    snippet=d.content,
+                    metadata={}
+                ) for d in docs
+            ]
+
+    async def ingest_to_postgres(self, title: str, content: str, source: str) -> bool:
+        """Ingest document chunk into PostgreSQL pgvector."""
+        from core.database import AsyncSessionLocal
+        from models.entities import KnowledgeDocumentEntity
+        
+        try:
+            vec = await self._embed(content)
+            async with AsyncSessionLocal() as session:
+                new_doc = KnowledgeDocumentEntity(
+                    title=title,
+                    content=content,
+                    source=source,
+                    embedding=vec
+                )
+                session.add(new_doc)
+                await session.commit()
+            return True
+        except Exception as e:
+            logger.error(f"Postgres ingestion failed: {e}")
+            return False
+
     async def ingest_document(
         self,
         doc_id: str,
@@ -326,6 +376,9 @@ class RAGService:
     ) -> bool:
         """Index a document into Qdrant. Returns True on success."""
         await self._init()
+        # Also ingest to Postgres for Feature 3 requirement
+        await self.ingest_to_postgres(title, text, source)
+        
         if not (self._qdrant_ok and self._embedder_ok and self._qdrant):
             logger.warning("Cannot ingest: Qdrant or embedder unavailable")
             return False

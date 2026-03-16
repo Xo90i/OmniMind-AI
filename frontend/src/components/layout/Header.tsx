@@ -34,7 +34,7 @@ export default function Header({ onSignIn, onSignUp, user, onSignOut }: HeaderPr
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <motion.div
            whileHover={{ scale: 1.02 }}
-           className="flex lg:flex-1"
+           className="flex lg:flex-none"
         >
           <a href="/" className="-m-1.5 p-1.5 flex items-center space-x-3 group">
             <div className="relative">
@@ -75,7 +75,7 @@ export default function Header({ onSignIn, onSignUp, user, onSignOut }: HeaderPr
           </button>
         </div>
         
-        <div className="hidden lg:flex lg:gap-x-12 items-center">
+        <div className="hidden lg:flex lg:gap-x-12 items-center lg:ml-12">
           {navItems.map((item, index) => (
             <motion.a
               key={item.name}
@@ -106,7 +106,7 @@ export default function Header({ onSignIn, onSignUp, user, onSignOut }: HeaderPr
           </motion.button>
         </div>
         
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-6">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-6">
           {!user ? (
             <>
               <motion.button

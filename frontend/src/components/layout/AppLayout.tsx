@@ -23,14 +23,20 @@ import {
 import { useTheme } from '@/context/ThemeContext';
 
 interface AppLayoutProps {
-  user: { name: string; email: string };
-  onSignOut: () => void;
+  user?: { name: string; email: string };
+  onSignOut?: () => void;
   children: React.ReactNode;
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
+  activeTab?: string;
+  setActiveTab?: (tab: string) => void;
 }
 
-export default function AppLayout({ user, onSignOut, children, activeTab, setActiveTab }: AppLayoutProps) {
+export default function AppLayout({ 
+  user = { name: 'Guest', email: 'guest@omnimind.ai' }, 
+  onSignOut = () => {}, 
+  children, 
+  activeTab = 'dashboard', 
+  setActiveTab = () => {} 
+}: AppLayoutProps) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const { theme, setTheme } = useTheme();
   const [isProfileOpen, setIsProfileOpen] = useState(false);

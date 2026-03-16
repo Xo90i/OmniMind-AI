@@ -15,6 +15,9 @@ import {
 import ConsensusPanel from '../ai/ConsensusPanel';
 import SimulationResults from '../ai/SimulationResults';
 import MultiAgentChat from '../ai/MultiAgentChat';
+import ScenarioSimulation from '../intel/ScenarioSimulation';
+import ResearchAgent from '../intel/ResearchAgent';
+import DocumentIntelligence from '../intel/DocumentIntelligence';
 
 interface DashboardProps {
   user: { name: string; email: string };
@@ -169,18 +172,10 @@ export default function Dashboard({ user, activeTab = 'dashboard' }: DashboardPr
         >
           {activeTab === 'dashboard' && renderOverview()}
           {activeTab === 'chat' && <MultiAgentChat />}
-          {activeTab === 'rag' && renderPlaceholder('RAG Knowledge Base', 'Access your unified knowledge and specialized RAG documentation.')}
-          {activeTab === 'sim' && (
-            <div className="p-8 max-w-7xl mx-auto space-y-8">
-              <div>
-                <p className="text-[var(--text-secondary)] text-xs font-medium mb-1">Scenario Planning</p>
-                <h2 className="text-2xl font-bold tracking-tight">Project Simulations</h2>
-              </div>
-              <SimulationResults />
-            </div>
-          )}
+          {activeTab === 'rag' && <DocumentIntelligence />}
+          {activeTab === 'sim' && <ScenarioSimulation />}
+          {activeTab === 'analytics' && <ResearchAgent />}
           {activeTab === 'consensus' && renderPlaceholder('Strategic Insights', 'Gathering expert opinions for comprehensive analysis.')}
-          {activeTab === 'analytics' && renderPlaceholder('Activity Reports', 'Keeping track of your project progress and history.')}
         </motion.div>
       </AnimatePresence>
     </div>

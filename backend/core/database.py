@@ -2,6 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 import asyncio
+from sqlalchemy import text
 from .config import settings
 
 # Normalise URL — accept both postgresql:// and postgresql+asyncpg://
@@ -31,6 +32,7 @@ async def init_db():
     for _ in range(15):
         try:
             async with engine.begin() as conn:
+                await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
                 await conn.run_sync(Base.metadata.create_all)
             return
         except Exception as exc:
