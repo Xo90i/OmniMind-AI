@@ -1,8 +1,14 @@
 import os
 import logging
 from typing import List, Dict, Any
-import PyPDF2
-from docx import Document as DocxDocument
+try:
+    import PyPDF2
+except ImportError:
+    PyPDF2 = None  # type: ignore
+try:
+    from docx import Document as DocxDocument
+except ImportError:
+    DocxDocument = None  # type: ignore
 import csv
 import io
 

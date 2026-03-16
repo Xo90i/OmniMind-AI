@@ -30,6 +30,13 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     AI_PROVIDER: str = os.getenv("AI_PROVIDER", "gradient")
 
+    # Multi-Agent Debate System
+    TAVILY_API_KEY: str = os.getenv("TAVILY_API_KEY", "")
+    OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    OPENAI_FINANCE_API_KEY: str = os.getenv("OPENAI_FINANCE_API_KEY", "")
+    OPENAI_RESEARCH_API_KEY: str = os.getenv("OPENAI_RESEARCH_API_KEY", "")
+
     # Qdrant vector DB
     QDRANT_URL: str = os.getenv("QDRANT_URL", "http://localhost:6333")
     QDRANT_API_KEY: str = os.getenv("QDRANT_API_KEY", "")
@@ -53,6 +60,9 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+        # Also look in parent directory if not found in backend/
+        if not os.path.exists(".env") and os.path.exists("../.env"):
+            env_file = "../.env"
 
 
 settings = Settings()
