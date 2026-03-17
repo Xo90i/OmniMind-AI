@@ -2,6 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 import asyncio
+from sqlalchemy import text
 from .config import settings
 
 # Normalise URL — accept both postgresql:// and postgresql+asyncpg://
@@ -26,18 +27,21 @@ Base = declarative_base()
 from models import entities  # noqa: F401,E402
 
 async def init_db():
-    """Initialize database tables"""
-    last_error = None
-    for _ in range(15):
+    """Initialize database tables — warn-only if DB is unavailable."""
+    import logging
+    _logger = logging.getLogger(__name__)
+    for attempt in range(3):
         try:
             async with engine.begin() as conn:
+                await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
                 await conn.run_sync(Base.metadata.create_all)
+            _logger.info("Database initialised successfully.")
             return
         except Exception as exc:
-            last_error = exc
+            _logger.warning("DB init attempt %d failed: %s", attempt + 1, exc)
             await asyncio.sleep(2)
 
-    raise last_error
+    _logger.warning("Database unavailable — running without persistence.")
 
 async def get_db():
     """Dependency to get database session"""

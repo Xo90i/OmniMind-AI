@@ -67,3 +67,19 @@ class SimulationEntity(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     session = relationship("SessionEntity", back_populates="simulations")
+
+
+try:
+    from pgvector.sqlalchemy import Vector
+except ImportError:
+    Vector = None
+
+class KnowledgeDocumentEntity(Base):
+    __tablename__ = "knowledge_base"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    title: Mapped[str] = mapped_column(String(256), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    source: Mapped[str] = mapped_column(String(256), nullable=True)
+    embedding: Mapped[list[float]] = mapped_column(Vector(384) if Vector else Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
